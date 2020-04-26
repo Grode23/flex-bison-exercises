@@ -8,6 +8,7 @@ int yyerror (const char * msg);
 
 %}
 
+/* For error messages */
 %error-verbose
 
 %token '.'

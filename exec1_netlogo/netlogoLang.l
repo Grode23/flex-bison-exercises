@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Defines of tokens */
 #define TK_NAME 300
 #define TK_TO 301
 #define TK_TO_REPORT 302
@@ -14,6 +15,7 @@
 #define TK_END 309
 #define TK_EQUAL 310
 
+/* Needed for syntax analyser */
 #define LEXEND 0
 
 int line = 1;
@@ -49,8 +51,11 @@ newline \n|\x0A|\x0D\x0A
 int token = 0;
 void error_syntax(const char* message);
 void match(int tk);
-/* this will be the top level function of your parser (start symbol)*/
+
+/* This will be the top level function of your parser (start symbol)*/
 void PDefinitions();
+
+/* Rest of functions */
 void PDef();
 void Extra1();
 void ProcFunN();
