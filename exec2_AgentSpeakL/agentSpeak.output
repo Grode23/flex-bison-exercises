@@ -1,0 +1,724 @@
+Grammar
+
+    0 $accept: Agent $end
+
+    1 Agent: Beliefs Plans
+
+    2 Beliefs: %empty
+    3        | Belief Beliefs
+
+    4 Belief: Predicate '.'
+    5       | error '.'
+
+    6 Predicate: TK_ATOM '(' Terms ')'
+
+    7 Plans: %empty
+    8      | Plan Plans
+
+    9 Plan: TriggeringEvent ':' Context "<-" Body '.'
+
+   10 TriggeringEvent: Op Word
+
+   11 Op: '+'
+   12   | '-'
+
+   13 Word: Predicate
+   14     | Goal
+
+   15 Context: "true"
+   16        | Cliterals
+
+   17 Cliterals: Literal ExtraCliterals
+
+   18 ExtraCliterals: %empty
+   19               | '&' Cliterals
+
+   20 Literal: Predicate
+   21        | "not" '(' Predicate ')'
+
+   22 Goal: Mark Predicate
+
+   23 Mark: '!'
+   24     | '?'
+
+   25 Body: "true"
+   26     | Actions
+
+   27 Actions: Action ExtraActions
+
+   28 ExtraActions: %empty
+   29             | ';' Actions
+
+   30 Action: Predicate
+   31       | BeliefUpdate
+   32       | Goal
+
+   33 BeliefUpdate: Op Predicate
+
+   34 Terms: Term ExtraTerms
+
+   35 ExtraTerms: %empty
+   36           | ',' Terms
+
+   37 Term: TK_VAR
+   38     | TK_NUM
+   39     | TK_ATOM ExtraTerm
+
+   40 ExtraTerm: %empty
+   41          | '(' Terms ')'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 23
+'&' (38) 19
+'(' (40) 6 21 41
+')' (41) 6 21 41
+'+' (43) 11
+',' (44) 36
+'-' (45) 12
+'.' (46) 4 5 9
+':' (58) 9
+';' (59) 29
+'?' (63) 24
+error (256) 5
+"<-" (258) 9
+"true" (259) 15 25
+"not" (260) 21
+TK_VAR (261) 37
+TK_NUM (262) 38
+TK_ATOM (263) 6 39
+
+
+Nonterminals, with rules where they appear
+
+$accept (20)
+    on left: 0
+Agent (21)
+    on left: 1, on right: 0
+Beliefs (22)
+    on left: 2 3, on right: 1 3
+Belief (23)
+    on left: 4 5, on right: 3
+Predicate (24)
+    on left: 6, on right: 4 13 20 21 22 30 33
+Plans (25)
+    on left: 7 8, on right: 1 8
+Plan (26)
+    on left: 9, on right: 8
+TriggeringEvent (27)
+    on left: 10, on right: 9
+Op (28)
+    on left: 11 12, on right: 10 33
+Word (29)
+    on left: 13 14, on right: 10
+Context (30)
+    on left: 15 16, on right: 9
+Cliterals (31)
+    on left: 17, on right: 16 19
+ExtraCliterals (32)
+    on left: 18 19, on right: 17
+Literal (33)
+    on left: 20 21, on right: 17
+Goal (34)
+    on left: 22, on right: 14 32
+Mark (35)
+    on left: 23 24, on right: 22
+Body (36)
+    on left: 25 26, on right: 9
+Actions (37)
+    on left: 27, on right: 26 29
+ExtraActions (38)
+    on left: 28 29, on right: 27
+Action (39)
+    on left: 30 31 32, on right: 27
+BeliefUpdate (40)
+    on left: 33, on right: 31
+Terms (41)
+    on left: 34, on right: 6 36 41
+ExtraTerms (42)
+    on left: 35 36, on right: 34
+Term (43)
+    on left: 37 38 39, on right: 34
+ExtraTerm (44)
+    on left: 40 41, on right: 39
+
+
+State 0
+
+    0 $accept: . Agent $end
+
+    error    shift, and go to state 1
+    TK_ATOM  shift, and go to state 2
+
+    $end  reduce using rule 2 (Beliefs)
+    '+'   reduce using rule 2 (Beliefs)
+    '-'   reduce using rule 2 (Beliefs)
+
+    Agent      go to state 3
+    Beliefs    go to state 4
+    Belief     go to state 5
+    Predicate  go to state 6
+
+
+State 1
+
+    5 Belief: error . '.'
+
+    '.'  shift, and go to state 7
+
+
+State 2
+
+    6 Predicate: TK_ATOM . '(' Terms ')'
+
+    '('  shift, and go to state 8
+
+
+State 3
+
+    0 $accept: Agent . $end
+
+    $end  shift, and go to state 9
+
+
+State 4
+
+    1 Agent: Beliefs . Plans
+
+    '+'  shift, and go to state 10
+    '-'  shift, and go to state 11
+
+    $default  reduce using rule 7 (Plans)
+
+    Plans            go to state 12
+    Plan             go to state 13
+    TriggeringEvent  go to state 14
+    Op               go to state 15
+
+
+State 5
+
+    3 Beliefs: Belief . Beliefs
+
+    error    shift, and go to state 1
+    TK_ATOM  shift, and go to state 2
+
+    $end  reduce using rule 2 (Beliefs)
+    '+'   reduce using rule 2 (Beliefs)
+    '-'   reduce using rule 2 (Beliefs)
+
+    Beliefs    go to state 16
+    Belief     go to state 5
+    Predicate  go to state 6
+
+
+State 6
+
+    4 Belief: Predicate . '.'
+
+    '.'  shift, and go to state 17
+
+
+State 7
+
+    5 Belief: error '.' .
+
+    $default  reduce using rule 5 (Belief)
+
+
+State 8
+
+    6 Predicate: TK_ATOM '(' . Terms ')'
+
+    TK_VAR   shift, and go to state 18
+    TK_NUM   shift, and go to state 19
+    TK_ATOM  shift, and go to state 20
+
+    Terms  go to state 21
+    Term   go to state 22
+
+
+State 9
+
+    0 $accept: Agent $end .
+
+    $default  accept
+
+
+State 10
+
+   11 Op: '+' .
+
+    $default  reduce using rule 11 (Op)
+
+
+State 11
+
+   12 Op: '-' .
+
+    $default  reduce using rule 12 (Op)
+
+
+State 12
+
+    1 Agent: Beliefs Plans .
+
+    $default  reduce using rule 1 (Agent)
+
+
+State 13
+
+    8 Plans: Plan . Plans
+
+    '+'  shift, and go to state 10
+    '-'  shift, and go to state 11
+
+    $default  reduce using rule 7 (Plans)
+
+    Plans            go to state 23
+    Plan             go to state 13
+    TriggeringEvent  go to state 14
+    Op               go to state 15
+
+
+State 14
+
+    9 Plan: TriggeringEvent . ':' Context "<-" Body '.'
+
+    ':'  shift, and go to state 24
+
+
+State 15
+
+   10 TriggeringEvent: Op . Word
+
+    '!'      shift, and go to state 25
+    '?'      shift, and go to state 26
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 27
+    Word       go to state 28
+    Goal       go to state 29
+    Mark       go to state 30
+
+
+State 16
+
+    3 Beliefs: Belief Beliefs .
+
+    $default  reduce using rule 3 (Beliefs)
+
+
+State 17
+
+    4 Belief: Predicate '.' .
+
+    $default  reduce using rule 4 (Belief)
+
+
+State 18
+
+   37 Term: TK_VAR .
+
+    $default  reduce using rule 37 (Term)
+
+
+State 19
+
+   38 Term: TK_NUM .
+
+    $default  reduce using rule 38 (Term)
+
+
+State 20
+
+   39 Term: TK_ATOM . ExtraTerm
+
+    '('  shift, and go to state 31
+
+    $default  reduce using rule 40 (ExtraTerm)
+
+    ExtraTerm  go to state 32
+
+
+State 21
+
+    6 Predicate: TK_ATOM '(' Terms . ')'
+
+    ')'  shift, and go to state 33
+
+
+State 22
+
+   34 Terms: Term . ExtraTerms
+
+    ','  shift, and go to state 34
+
+    $default  reduce using rule 35 (ExtraTerms)
+
+    ExtraTerms  go to state 35
+
+
+State 23
+
+    8 Plans: Plan Plans .
+
+    $default  reduce using rule 8 (Plans)
+
+
+State 24
+
+    9 Plan: TriggeringEvent ':' . Context "<-" Body '.'
+
+    "true"   shift, and go to state 36
+    "not"    shift, and go to state 37
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 38
+    Context    go to state 39
+    Cliterals  go to state 40
+    Literal    go to state 41
+
+
+State 25
+
+   23 Mark: '!' .
+
+    $default  reduce using rule 23 (Mark)
+
+
+State 26
+
+   24 Mark: '?' .
+
+    $default  reduce using rule 24 (Mark)
+
+
+State 27
+
+   13 Word: Predicate .
+
+    $default  reduce using rule 13 (Word)
+
+
+State 28
+
+   10 TriggeringEvent: Op Word .
+
+    $default  reduce using rule 10 (TriggeringEvent)
+
+
+State 29
+
+   14 Word: Goal .
+
+    $default  reduce using rule 14 (Word)
+
+
+State 30
+
+   22 Goal: Mark . Predicate
+
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 42
+
+
+State 31
+
+   41 ExtraTerm: '(' . Terms ')'
+
+    TK_VAR   shift, and go to state 18
+    TK_NUM   shift, and go to state 19
+    TK_ATOM  shift, and go to state 20
+
+    Terms  go to state 43
+    Term   go to state 22
+
+
+State 32
+
+   39 Term: TK_ATOM ExtraTerm .
+
+    $default  reduce using rule 39 (Term)
+
+
+State 33
+
+    6 Predicate: TK_ATOM '(' Terms ')' .
+
+    $default  reduce using rule 6 (Predicate)
+
+
+State 34
+
+   36 ExtraTerms: ',' . Terms
+
+    TK_VAR   shift, and go to state 18
+    TK_NUM   shift, and go to state 19
+    TK_ATOM  shift, and go to state 20
+
+    Terms  go to state 44
+    Term   go to state 22
+
+
+State 35
+
+   34 Terms: Term ExtraTerms .
+
+    $default  reduce using rule 34 (Terms)
+
+
+State 36
+
+   15 Context: "true" .
+
+    $default  reduce using rule 15 (Context)
+
+
+State 37
+
+   21 Literal: "not" . '(' Predicate ')'
+
+    '('  shift, and go to state 45
+
+
+State 38
+
+   20 Literal: Predicate .
+
+    $default  reduce using rule 20 (Literal)
+
+
+State 39
+
+    9 Plan: TriggeringEvent ':' Context . "<-" Body '.'
+
+    "<-"  shift, and go to state 46
+
+
+State 40
+
+   16 Context: Cliterals .
+
+    $default  reduce using rule 16 (Context)
+
+
+State 41
+
+   17 Cliterals: Literal . ExtraCliterals
+
+    '&'  shift, and go to state 47
+
+    $default  reduce using rule 18 (ExtraCliterals)
+
+    ExtraCliterals  go to state 48
+
+
+State 42
+
+   22 Goal: Mark Predicate .
+
+    $default  reduce using rule 22 (Goal)
+
+
+State 43
+
+   41 ExtraTerm: '(' Terms . ')'
+
+    ')'  shift, and go to state 49
+
+
+State 44
+
+   36 ExtraTerms: ',' Terms .
+
+    $default  reduce using rule 36 (ExtraTerms)
+
+
+State 45
+
+   21 Literal: "not" '(' . Predicate ')'
+
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 50
+
+
+State 46
+
+    9 Plan: TriggeringEvent ':' Context "<-" . Body '.'
+
+    '!'      shift, and go to state 25
+    '?'      shift, and go to state 26
+    "true"   shift, and go to state 51
+    TK_ATOM  shift, and go to state 2
+    '+'      shift, and go to state 10
+    '-'      shift, and go to state 11
+
+    Predicate     go to state 52
+    Op            go to state 53
+    Goal          go to state 54
+    Mark          go to state 30
+    Body          go to state 55
+    Actions       go to state 56
+    Action        go to state 57
+    BeliefUpdate  go to state 58
+
+
+State 47
+
+   19 ExtraCliterals: '&' . Cliterals
+
+    "not"    shift, and go to state 37
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 38
+    Cliterals  go to state 59
+    Literal    go to state 41
+
+
+State 48
+
+   17 Cliterals: Literal ExtraCliterals .
+
+    $default  reduce using rule 17 (Cliterals)
+
+
+State 49
+
+   41 ExtraTerm: '(' Terms ')' .
+
+    $default  reduce using rule 41 (ExtraTerm)
+
+
+State 50
+
+   21 Literal: "not" '(' Predicate . ')'
+
+    ')'  shift, and go to state 60
+
+
+State 51
+
+   25 Body: "true" .
+
+    $default  reduce using rule 25 (Body)
+
+
+State 52
+
+   30 Action: Predicate .
+
+    $default  reduce using rule 30 (Action)
+
+
+State 53
+
+   33 BeliefUpdate: Op . Predicate
+
+    TK_ATOM  shift, and go to state 2
+
+    Predicate  go to state 61
+
+
+State 54
+
+   32 Action: Goal .
+
+    $default  reduce using rule 32 (Action)
+
+
+State 55
+
+    9 Plan: TriggeringEvent ':' Context "<-" Body . '.'
+
+    '.'  shift, and go to state 62
+
+
+State 56
+
+   26 Body: Actions .
+
+    $default  reduce using rule 26 (Body)
+
+
+State 57
+
+   27 Actions: Action . ExtraActions
+
+    ';'  shift, and go to state 63
+
+    $default  reduce using rule 28 (ExtraActions)
+
+    ExtraActions  go to state 64
+
+
+State 58
+
+   31 Action: BeliefUpdate .
+
+    $default  reduce using rule 31 (Action)
+
+
+State 59
+
+   19 ExtraCliterals: '&' Cliterals .
+
+    $default  reduce using rule 19 (ExtraCliterals)
+
+
+State 60
+
+   21 Literal: "not" '(' Predicate ')' .
+
+    $default  reduce using rule 21 (Literal)
+
+
+State 61
+
+   33 BeliefUpdate: Op Predicate .
+
+    $default  reduce using rule 33 (BeliefUpdate)
+
+
+State 62
+
+    9 Plan: TriggeringEvent ':' Context "<-" Body '.' .
+
+    $default  reduce using rule 9 (Plan)
+
+
+State 63
+
+   29 ExtraActions: ';' . Actions
+
+    '!'      shift, and go to state 25
+    '?'      shift, and go to state 26
+    TK_ATOM  shift, and go to state 2
+    '+'      shift, and go to state 10
+    '-'      shift, and go to state 11
+
+    Predicate     go to state 52
+    Op            go to state 53
+    Goal          go to state 54
+    Mark          go to state 30
+    Actions       go to state 65
+    Action        go to state 57
+    BeliefUpdate  go to state 58
+
+
+State 64
+
+   27 Actions: Action ExtraActions .
+
+    $default  reduce using rule 27 (Actions)
+
+
+State 65
+
+   29 ExtraActions: ';' Actions .
+
+    $default  reduce using rule 29 (ExtraActions)
