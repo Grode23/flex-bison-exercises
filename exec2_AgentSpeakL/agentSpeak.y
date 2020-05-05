@@ -9,7 +9,7 @@ int yyerror (const char * msg);
 %}
 
 /* For error messages */
-%error-verbose
+%define parse.error verbose
 
 %token '.'
 %token ':'
